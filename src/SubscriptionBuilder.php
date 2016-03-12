@@ -153,6 +153,26 @@ class SubscriptionBuilder
     }
 
     /**
+     * Add a line item to the subscription invoice.
+     *
+     * @param  string  $token
+     * @param  string  $description
+     * @param  int  $amount
+     * @return \Laravel\Cashier\Subscription
+     */
+    public function addInvoiceItem($token, $description, $amount)
+    {
+        $customer = $this->getStripeCustomer($token);
+
+        return \Stripe\InvoiceItem::create(array(
+          "customer" => $customer->id,
+          "amount" => $amount,
+          "currency" => "usd",
+          "description" => $description,
+        ));
+    }
+
+    /**
      * Create a new Stripe subscription.
      *
      * @param  string|null  $token
